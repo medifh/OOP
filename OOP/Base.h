@@ -4,7 +4,7 @@
 class Printable
 {
 public:
-	virtual std::string Print(void) = 0;
+	virtual std::string Print() = 0;
 };
 
 class Named : public Printable
@@ -15,12 +15,12 @@ private:
 
 public:
 
-	void Putname(std::string name)
+	void Putname(std::string  const & name)
 	{
 		m_name = name;
 	}
 
-	std::string Getname()
+	std::string Getname() const
 	{
 		return m_name;
 	}

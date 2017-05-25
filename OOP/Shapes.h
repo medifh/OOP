@@ -7,19 +7,29 @@ class Shape : public Printable
 {
 
 protected:
-	static int counter;
+	//static
+	int m_counter;
 
 public:
-	Shape() {}
-	~Shape() {}
-private:
-	std::string Print()
+	/*
+	static int GetCount ()
 	{
-		return "";
-	};
+		return m_counter;
+	}
+
+	static void RefreshCount()
+	{
+		m_counter=0;
+	}
+	*/
+	Shape() { }
+	~Shape() { }
+private:
 };
 
-class Point : public Named, Shape
+
+
+class Point : public Named, public Shape
 {
 
 private:
@@ -28,38 +38,41 @@ private:
 public:
 	Point()
 	{
-		this->Putname("Point ");
+		this -> Putname("Point ");
 		m_x = 0;
 		m_y = 0;
+		Shape::m_counter ++;
 	}
 
-	~Point() {}
+	~Point() { Shape::m_counter --; }
 
 	Point(double x, double y)
 	{
-		this->Putname("Point ");
+		this -> Putname("Point ");
 		m_x = x;
 		m_y = y;
+		Shape::m_counter ++;
 	}
 
 	Point coords(double x, double y)
 	{
 		m_x = x;
 		m_y = y;
-		return *this;
+		return * this;
 	}
 
 	std::string Print()
 	{
 		std::string info;
-		info = this->Getname() + "x = " + std::to_string((long double)m_x) + " y = " + std::to_string((long double)m_y);
+		info = this->Getname();
+		info += "x = " + std::to_string((long double)m_x) + " y = " + std::to_string((long double)m_y);
 		return info;
 	}
 
 	Point(const Point & orig)
 	{
-		this->m_x = orig.m_x;
-		this->m_y = orig.m_y;
+		this -> m_x = orig.m_x;
+		this -> m_y = orig.m_y;
 	}
 
 	double x()
@@ -74,7 +87,7 @@ public:
 
 };
 
-class Circle : public Named, Shape
+class Circle : public Named, public Shape
 {
 private:
 	Point m_centre;
@@ -83,16 +96,18 @@ private:
 public:
 	Circle()
 	{
-		this->Putname("Circle ");
+		Shape::m_counter ++;
+		this -> Putname("Circle ");
 		m_centre.coords(0, 0);
 		m_radius = 0;
 	}
 
-	~Circle() {}
+	~Circle() { Shape::m_counter --; }
 
 	Circle(Point o, int rad)
 	{
-		this->Putname("Circle ");
+		Shape::m_counter ++;
+		this -> Putname("Circle ");
 		m_centre = o;
 		m_radius = rad;
 	}
@@ -105,20 +120,20 @@ public:
 	std::string Print()
 	{
 		std::string info;
-		info = this->Getname() + m_centre.Print() + " radius= " + std::to_string((long double)m_radius);
+		info = this -> Getname() + m_centre.Print() + " radius= " + std::to_string((long double)m_radius);
 		info += " Area: " + std::to_string((long double)this->Area());
 		return info;
 	}
 
 	Circle(const Circle & orig)
 	{
-		this->m_centre = orig.m_centre;
-		this->m_radius = orig.m_radius;
+		this -> m_centre = orig.m_centre;
+		this -> m_radius = orig.m_radius;
 	}
 
 };
 
-class Rect : public Named, Shape
+class Rect : public Named, public Shape
 {
 private:
 	Point m_botleft;
@@ -127,19 +142,21 @@ private:
 public:
 	Rect()
 	{
-		this->Putname("Rectangle ");
+		Shape::m_counter++;
+		this -> Putname("Rectangle ");
 		m_botleft.coords(0, 0);
 		m_upright.coords(0, 0);
 	}
 
 	Rect(Point a_point, Point b_point)
 	{
-		this->Putname("Rectangle ");
+		Shape::m_counter++;
+		this -> Putname("Rectangle ");
 		m_botleft = a_point;
 		m_upright = b_point;
 	}
 
-	~Rect() {}
+	~Rect() { Shape::m_counter--; }
 
 	double Area()
 	{
@@ -156,8 +173,8 @@ public:
 
 	Rect(const Rect & orig)
 	{
-		this->m_botleft = orig.m_botleft;
-		this->m_upright = orig.m_upright;
+		this -> m_botleft = orig.m_botleft;
+		this -> m_upright = orig.m_upright;
 	}
 
 };
@@ -173,7 +190,8 @@ public:
 
 	Square()
 	{
-		this->Putname("Rectangle ");
+		Shape::m_counter++;
+		this -> Putname("Rectangle ");
 		m_botleft.coords(0, 0);
 		m_upright.coords(0, 0);
 		m_length = 0;
@@ -181,23 +199,24 @@ public:
 
 	Square(Point a_point, Point b_point, double length)
 	{
-		this->Putname("Rectangle ");
+		Shape::m_counter++;
+		this -> Putname("Rectangle ");
 		m_botleft = a_point;
 		m_upright = b_point;
 		m_length = length;
 	}
 
-	~Square() {}
+	~Square() { Shape::m_counter--; }
 
 	double Area()
 	{
-		return m_length*m_length;
+		return m_length * m_length;
 	}
 
 	std::string Print()
 	{
 		std::string info;
-		info = this->Getname() + " first dot: " + m_botleft.Print() + " second dot: " + m_upright.Print();
+		info = this -> Getname() + " first dot: " + m_botleft.Print() + " second dot: " + m_upright.Print();
 		info += " length: " + std::to_string((long double)m_length);
 		info += " Area: " + std::to_string((long double)this->Area());
 		return info;
@@ -205,34 +224,36 @@ public:
 
 	Square(const Square & orig)
 	{
-		this->m_botleft = orig.m_botleft;
-		this->m_upright = orig.m_upright;
-		this->m_length = orig.m_length;
+		this -> m_botleft = orig.m_botleft;
+		this -> m_upright = orig.m_upright;
+		this -> m_length = orig.m_length;
 	}
 
 };
 
 class Polygon;
 
-class Polyline :public Named, Shape
+class Polyline :public Named, public Shape
 {
 private:
-	Conteiner <Point>  m_dots;
+	Container <Point>  m_dots;
 
 public:
 	Polyline()
 	{
-		this->Putname("Polyline ");
-		Conteiner <Point>  m_dots;
+		Shape::m_counter++;
+		this -> Putname("Polyline ");
+		Container <Point>  m_dots;
 	}
 
 	Polyline(Point firstdot)
 	{
-		this->Putname("Polyline ");
+		Shape::m_counter++;
+		this -> Putname("Polyline ");
 		m_dots.PutHead(firstdot);
 	}
 
-	~Polyline() {}
+	~Polyline() { Shape::m_counter--; }
 
 	double Length()
 	{
@@ -250,7 +271,7 @@ public:
 	std::string Print()
 	{
 		std::string info;
-		info = this->Getname() + " dots: ";
+		info = this -> Getname() + " dots: ";
 		for (int i = 0; i < m_dots.GetQuanity(); i++)
 		{
 			Point b = m_dots.GetElement(i);
@@ -262,7 +283,7 @@ public:
 
 	Polyline(const Polyline & orig)
 	{
-		this->m_dots = orig.m_dots;
+		this -> m_dots = orig.m_dots;
 	}
 
 	void AddPoint(Point const & newdot)
@@ -282,13 +303,15 @@ public:
 
 	Polygon()
 	{
-		this->Putname("Polygon ");
-		Conteiner <Point>  m_dots;
+		Shape::m_counter++;
+		this -> Putname("Polygon ");
+		Container <Point>  m_dots;
 	}
 
 	Polygon(Point firstdot)
 	{
-		this->Putname("Polygon ");
+		Shape::m_counter++;
+		this -> Putname("Polygon ");
 		m_dots.PutHead(firstdot);
 		m_dots.PutTail(firstdot);
 	}
@@ -297,7 +320,7 @@ public:
 	{
 		std::string info;
 		info = this->Getname() + " dots: ";
-		for (int i = 0; i < m_dots.GetQuanity(); i++)
+		for (int i = 0; i < m_dots.GetQuanity(); i ++)
 		{
 			Point b = m_dots.GetElement(i);
 			info += "dot number " + std::to_string((long double)i) + ": " + b.Print() + " ";
@@ -308,14 +331,28 @@ public:
 
 	Polygon(const Polygon & orig)
 	{
-		this->m_dots = orig.m_dots;
+		this -> m_dots = orig.m_dots;
 	}
 
 	void AddPoint(Point const & newdot)
 	{
-		m_dots.DelHead();
-		m_dots.PutHead(newdot);
-		m_dots.PutHead(m_dots.GetTail());
+		if (m_dots.IsEmpty()) m_dots.PutHead(newdot);
+		else
+		{
+			Point a =  m_dots.GetHead();
+			m_dots.DelHead();
+			if (m_dots.IsEmpty())
+			{
+				m_dots.PutHead(newdot);
+				m_dots.PutHead(a);
+				m_dots.PutTail(a);
+			}
+			else
+			{
+				m_dots.PutHead(newdot);
+				m_dots.PutHead(m_dots.GetTail());
+			}
+		}
 		//For polygon tail=head
 	}
 

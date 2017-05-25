@@ -2,37 +2,74 @@
 #include "Factory.cpp"
 #include <ctime>
 
-void main()
+
+
+int main()
 {
+	//	Shape::RefreshCount();
 	srand((unsigned int)time(0));
-	std::string b;
-	Point a(12, 3);
-	Point a1(21, 4);
-	Circle c(a, 2);
-	Rect d(a, a1);
-	Square x;
-	Polyline y;
-	Polygon z;
-	y.AddPoint(a);
-	z.AddPoint(a);
-	y.AddPoint(a1);
-	z.AddPoint(a1);
-	std::cout << y.Print() << "\n" << z.Print() << "\n" << d.Print();
-	/*
-	Conteiner<Shape> figures;
-	Point sadf = RandPoint<int>();
-	
+
+	Container<Shape*> figures;
 	for (int i = 0; i < 20; i++)
 	{
 		int r = rand() % 6;
-		if (r == 0) figures.PutHead(RandPoint<int>());
-		if (r == 1) figures.PutHead(RandRect<int>());
-		if (r == 2) figures.PutHead(RandSquare<int>());
-		if (r == 3) figures.PutHead(RandCircle<int>());
-		if (r == 4) figures.PutHead(RandPolygon<int>());
-		if (r == 5) figures.PutHead(RandPolyline<int>());
-	}*/
-	Rect cc = RandRect<int>();
-	std::cout << "\n\n" << cc.Print();
+		if (r == 0) {
+			Point * a = new Point(RandPoint<int>());
+			figures.PutHead(a);
+		}
+		if (r == 1) {
+			Rect * a = new Rect(RandRect<int>());
+			figures.PutHead(a);
+		}
+		if (r == 2) {
+			Square * a = new Square(RandSquare<int>());
+			figures.PutHead(a);
+		}
+		if (r == 3) {
+			Circle * a = new Circle(RandCircle<int>());
+			figures.PutHead(a);
+		}
+		if (r == 4) {
+			Polygon * a = new Polygon(RandPolygon<int>());
+			figures.PutHead(a);
+		}
+		if (r == 5) {
+			Polyline * a = new Polyline(RandPolyline<int>());
+			figures.PutHead(a);
+		}
+	}
+	std::string error_info;
+	try
+	{
+		if (figures.IsEmpty()) throw error_info = "container is empty in first for";
+		for (int i = 0; i < 20; i++)
+		{
+			std::cout << "\n\n" << (figures.GetElement(i)) -> Print();
+		}
+	}
+	catch (const std::string &error_info) {
+		std::cout << error_info;
+		system( "pause" );
+		return 1;
+	}
+
+	figures.Clearn();
+
+	try
+	{
+		if (figures.IsEmpty()) throw error_info = "container is empty in second for";
+		for (int i = 0; i < 20; i++)
+		{
+			std::cout << "\n\n" << (figures.GetElement(i)) -> Print();
+		}
+	}
+	catch (const std::string &error_info) {
+		std::cout << "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n" << error_info << "\n";
+		system("pause");
+		return 2;
+	}
+
+	//std::cout << "\n\n" << Shape::GetCount();
 	system("pause");
+	return 0;
 }

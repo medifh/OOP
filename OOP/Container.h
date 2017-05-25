@@ -2,7 +2,7 @@
 
 template < typename T >
 
-class Conteiner
+class Container
 {
 private:
 	struct Element
@@ -10,7 +10,6 @@ private:
 		T m_value;
 		Element * m_next;
 		Element * m_previous;
-		int tag;
 	};
 
 	Element * m_head;
@@ -19,15 +18,15 @@ private:
 
 public:
 
-	Conteiner()
+	Container()
 	{
 		m_head = NULL;
 		m_tail = NULL;
 		m_quanity = 0;
 	};
 
-	~Conteiner()
-	{
+	~Container()
+	{/*
 		Element * current = m_head;
 		Element * current2 = m_head;
 		while (current != NULL)
@@ -35,13 +34,17 @@ public:
 			current2 = (current->m_previous);
 			delete current;
 			current = current2;
-		}
+		}*/
 	};
 
-	Conteiner(const Conteiner & orig)
+	Container(const Container & orig)
 	{
-		this->m_head = orig.m_head;
-		this->m_tail = orig.m_tail;
+		Element * current = tail;
+		while (current != NULL)
+		{
+			this->PutHead(current->m_value);
+			current = current -> next;
+		}
 	}
 
 	void DelTail()
@@ -69,17 +72,17 @@ public:
 
 	}
 
-	T GetHead() //get from conteiner first element
+	T GetHead() //get from Container first element
 	{
 		return m_head->m_value;
 	}
 
-	T GetTail() //get from conteiner last element
+	T GetTail() //get from Container last element
 	{
 		return m_tail->m_value;
 	}
 
-	T GetElement(int numb) //get from conteiner element with number "numb"
+	T GetElement(int numb) //get from Container element with number "numb"
 	{
 		int i = 0;
 		Element * current = m_tail;
@@ -91,12 +94,12 @@ public:
 		return current->m_value;
 	}
 
-	void PutHead(T newval) //put in conteiner new first element
+	void PutHead(T  const & newval) //put in Container new first element
 	{
 		Element * newhead = new Element;
-		newhead->m_next = NULL;
-		newhead->m_previous = m_head;
-		newhead->m_value = newval;
+		newhead -> m_next = NULL;
+		newhead -> m_previous = m_head;
+		newhead -> m_value = newval;
 		if (m_head != NULL) m_head->m_next = newhead;
 		m_head = newhead;
 		if (m_tail == NULL) m_tail = m_head;
@@ -104,12 +107,12 @@ public:
 		m_quanity++;
 	}
 
-	void PutTail(T newval) // put in conteiner new last element
+	void PutTail(T  const & newval) // put in Container new last element
 	{
 		Element * newtail = new Element;
-		newtail->m_next = m_tail;
-		newtail->m_previous = NULL;
-		newtail->m_value = newval;
+		newtail -> m_next = m_tail;
+		newtail -> m_previous = NULL;
+		newtail -> m_value = newval;
 		if (m_tail != NULL) m_tail->m_previous = newtail;
 		m_tail = newtail;
 		if (m_head == NULL) m_head = m_tail;
